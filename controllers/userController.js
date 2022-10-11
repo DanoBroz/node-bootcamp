@@ -63,9 +63,6 @@ exports.deleteMe = catchAsync(
     }
 )
 
-exports.getUser = (req, res, next) =>
-    factory.getOne(User)
-
 exports.createUser = (req, res) => {
     res.status(500).json({
         status: 'error',
@@ -77,5 +74,6 @@ exports.createUser = (req, res) => {
 // Do NOT update passwords with this
 exports.updateUser = factory.updateOne(User)
 
+exports.getUser = factory.getOne(User)
 exports.getAllUsers = factory.getAll(User)
 exports.deleteUser = factory.deleteOne(User)
