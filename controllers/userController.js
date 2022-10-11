@@ -12,21 +12,6 @@ const filterObj = (obj, ...allowedFields) => {
     return newObj
 }
 
-exports.getAllUsers = catchAsync(
-    async (req, res, next) => {
-        const users = await User.find()
-
-        //send response
-        res.status(200).json({
-            status: 'success',
-            results: users.length,
-            data: {
-                users,
-            },
-        })
-    }
-)
-
 exports.updateMe = catchAsync(
     async (req, res, next) => {
         // 1) create error if user POSTs password data
@@ -91,4 +76,6 @@ exports.createUser = (req, res) => {
 
 // Do NOT update passwords with this
 exports.updateUser = factory.updateOne(User)
+
+exports.getAllUsers = factory.getAll(User)
 exports.deleteUser = factory.deleteOne(User)
