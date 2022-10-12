@@ -75,7 +75,7 @@ reviewSchema.statics.calcAverageRatings =
                 },
             },
         ])
-        console.log(stats)
+        // console.log(stats)
 
         if (stats.length > 0) {
             await Tour.findByIdAndUpdate(tourId, {
@@ -101,7 +101,7 @@ reviewSchema.pre(
     async function (next) {
         // get the document after query has been called
         this.r = await this.findOne()
-        console.log(this.r)
+        // console.log(this.r)
     }
 )
 
