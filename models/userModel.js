@@ -84,12 +84,6 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
-userSchema.pre(/^find/, function (next) {
-    // this points to current Query
-    this.find({ active: { $ne: false } })
-    next()
-})
-
 userSchema.pre('save', function (next) {
     // if password property isn't modified, do not manipulate passwordChangedAt
     if (
@@ -99,6 +93,12 @@ userSchema.pre('save', function (next) {
         return next()
 
     this.passwordChangedAt = Date.now() - 1000
+    next()
+})
+
+userSchema.pre(/^find/, function (next) {
+    // this points to current Query
+    this.find({ active: { $ne: false } })
     next()
 })
 
