@@ -194,7 +194,7 @@ exports.isLoggedIn = catchAsync(
 
             // there is a logged in user
             res.locals.user = currentUser
-            next()
+            return next()
         }
         next()
     }
