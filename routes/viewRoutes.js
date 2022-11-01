@@ -5,12 +5,28 @@ const authController = require('../controllers/authController')
 const router = express.Router()
 
 // use log in middleware
-router.use(authController.isLoggedIn)
+router.get(
+    '/',
+    authController.isLoggedIn,
+    viewsController.getOverview
+)
 
-router.get('/', viewsController.getOverview)
+router.get(
+    '/tour/:slug',
+    authController.isLoggedIn,
+    viewsController.getTour
+)
 
-router.get('/tour/:slug', viewsController.getTour)
+router.get(
+    '/login',
+    authController.isLoggedIn,
+    viewsController.getLogin
+)
 
-router.get('/login', viewsController.getLogin)
+router.get(
+    '/me',
+    authController.protect,
+    viewsController.getAccount
+)
 
 module.exports = router
