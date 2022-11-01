@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { displayMap } from './mapbox'
 import { login, logout } from './login'
-import { updateData } from './updateSettings'
+import { updateSettings } from './updateSettings'
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map')
@@ -10,6 +10,9 @@ const loginForm = document.querySelector(
 )
 const userDataForm = document.querySelector(
     '.form-user-data'
+)
+const userPasswordForm = document.querySelector(
+    '.form-user-password'
 )
 const logOutBtn = document.querySelector(
     '.nav__el--logout'
@@ -41,19 +44,67 @@ if (loginForm) {
 }
 
 if (userDataForm) {
-    const userName =
-        document.querySelector('#name')
-    const userEmail =
-        document.querySelector('#email')
+    const name =
+        document.querySelector('#name').value
+    const email =
+        document.querySelector('#email').value
 
     userDataForm.addEventListener(
         'submit',
         (e) => {
             e.preventDefault()
-            updateData(
-                userName.value,
-                userEmail.value
+            updateSettings(
+                { name, email },
+                'data'
             )
+        }
+    )
+}
+
+if (userPasswordForm) {
+    userPasswordForm.addEventListener(
+        'submit',
+        async (e) => {
+            e.preventDefault()
+
+            document.querySelector(
+                '.btn--save-password'
+            ).textContent = 'Updating...'
+
+            const passwordCurrent =
+                document.getElementById(
+                    'password-current'
+                ).value
+            const password =
+                document.getElementById(
+                    'password'
+                ).value
+            const passwordConfirm =
+                document.getElementById(
+                    'password-confirm'
+                ).value
+
+            await updateSettings(
+                {
+                    passwordCurrent,
+                    password,
+                    passwordConfirm,
+                },
+                'password'
+            )
+
+            document.querySelector(
+                '.btn--save-password'
+            ).textContent = 'Save password'
+            document.getElementById(
+                'password-current'
+            ).value = ''
+            document.getElementById(
+                'password'
+            ).value = ''
+            document.getElementById(
+                'password-confirm'
+            ).value = ''
         }
     )
 }
