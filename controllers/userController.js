@@ -57,8 +57,9 @@ exports.getMe = (req, res, next) => {
 
 exports.updateMe = catchAsync(
     async (req, res, next) => {
-        console.log(req.file)
-        console.log(req.body)
+        // console.log(req.file)
+        // console.log(req.body)
+
         // 1) create error if user POSTs password data
         if (
             req.body.password ||
@@ -78,6 +79,10 @@ exports.updateMe = catchAsync(
             'name',
             'email'
         )
+
+        if (req.file)
+            filteredBody.photo = req.file.filename
+
         // 3) update user document
         const updatedUser =
             await User.findByIdAndUpdate(
