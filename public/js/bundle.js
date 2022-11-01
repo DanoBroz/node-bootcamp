@@ -12265,14 +12265,13 @@ if (loginForm) {
   });
 }
 if (userDataForm) {
-  var name = document.querySelector('#name').value;
-  var email = document.querySelector('#email').value;
   userDataForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    (0, _updateSettings.updateSettings)({
-      name: name,
-      email: email
-    }, 'data');
+    var form = new FormData();
+    form.append('name', document.querySelector('#name').value);
+    form.append('email', document.querySelector('#email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
+    (0, _updateSettings.updateSettings)(form, 'data');
   });
 }
 if (userPasswordForm) {
