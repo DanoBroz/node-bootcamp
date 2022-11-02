@@ -71,6 +71,8 @@ router
             'admin',
             'lead-guide'
         ),
+        tourController.uploadTourImages,
+        tourController.resizeTourImages,
         tourController.updateTour
     )
     .delete(
