@@ -2,6 +2,7 @@
 import { displayMap } from './mapbox'
 import { login, logout } from './login'
 import { updateSettings } from './updateSettings'
+import { bookTour } from './stripe'
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map')
@@ -17,6 +18,8 @@ const userPasswordForm = document.querySelector(
 const logOutBtn = document.querySelector(
     '.nav__el--logout'
 )
+const bookBtn =
+    document.getElementById('book-tour')
 
 // DELEGATION
 if (mapBox) {
@@ -121,3 +124,11 @@ if (userPasswordForm) {
 
 if (logOutBtn)
     logOutBtn.addEventListener('click', logout)
+
+if (bookBtn) {
+    bookBtn.addEventListener('click', (e) => {
+        e.target.textContent = 'Processing...'
+        const { tourId } = e.target.dataset
+        bookTour(tourId)
+    })
+}
