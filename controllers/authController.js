@@ -14,10 +14,12 @@ const signToken = (id) =>
 const createSendToken = (
     user,
     statusCode,
+    req,
     res
 ) => {
     const token = signToken(user._id)
-    const cookieOptions = {
+
+    res.cookie('jwt', token, {
         expires: new Date(
             Date.now() +
                 process.env
@@ -28,11 +30,11 @@ const createSendToken = (
                     1000
         ),
         httpOnly: true,
-    }
-    if (process.env.NODE_ENV === 'production')
-        cookieOptions.secure = true
-
-    res.cookie('jwt', token, cookieOptions)
+        secure:
+            req.secure ||
+            req.headers['x-forwarded-proto'] ===
+                'https',
+    })
 
     user.password = undefined
 
@@ -70,7 +72,7 @@ exports.signup = catchAsync(
             url
         ).sendWelcome()
 
-        createSendToken(newUser, 201, res)
+        createSendToken(newUser, 201, req, res)
     }
 )
 
@@ -114,7 +116,7 @@ exports.login = catchAsync(
             )
         }
 
-        createSendToken(user, 200, res)
+        createSendToken(user, 200, req, res)
     }
 )
 
@@ -325,7 +327,7 @@ exports.resetPassword = catchAsync(
         await user.save()
         // 3) update changedPasswordAt property for the user
         // 4) Log the user in, send JWT
-        createSendToken(user, 201, res)
+        createSendToken(user, 201, req, res)
     }
 )
 
@@ -357,6 +359,6 @@ exports.updatePassword = catchAsync(
         await user.save()
 
         // 4) Log user in, send JWT
-        createSendToken(user, 200, res)
+        createSendToken(user, 200, req, res)
     }
 )
