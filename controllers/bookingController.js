@@ -1,5 +1,6 @@
 const Stripe = require('stripe')
 const Tour = require('../models/tourModel')
+const Booking = require('../models/bookingModel')
 const catchAsync = require('../utils/catchAsync')
 const factory = require('./handlerFactory')
 const AppError = require('../utils/appError')
@@ -23,7 +24,13 @@ exports.getCheckoutSession = catchAsync(
                     ],
                     success_url: `${
                         req.protocol
-                    }://${req.get('host')}/`,
+                    }://${req.get(
+                        'host'
+                    )}/?tour=${
+                        req.params.tourId
+                    }&user=${req.user.id}&price=${
+                        tour.price
+                    }`,
                     cancel_url: `${
                         req.protocol
                     }://${req.get('host')}/tour/${
@@ -61,5 +68,25 @@ exports.getCheckoutSession = catchAsync(
             status: 'success',
             session,
         })
+    }
+)
+
+exports.createBookingCheckout = catchAsync(
+    // this is only temporary, because it's unsecure: everyone can make bookings without paying
+    async (req, res, next) => {
+        const { tour, user, price } = req.query
+
+        if (!tour && !user && !price)
+            return next()
+
+        await Booking.create({
+            tour,
+            user,
+            price,
+        })
+
+        res.redirect(
+            req.originalUrl.split('?')[0]
+        )
     }
 )
