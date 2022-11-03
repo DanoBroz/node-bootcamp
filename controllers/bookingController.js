@@ -58,7 +58,13 @@ exports.getCheckoutSession = catchAsync(
                                     description:
                                         tour.summary,
                                     images: [
-                                        `https://www.natours.dev/img/tours/${tour.imageCover}`,
+                                        `${
+                                            req.protocol
+                                        }://${req.get(
+                                            'host'
+                                        )}/img/tours/${
+                                            tour.imageCover
+                                        }`,
                                     ],
                                 },
                             },
@@ -104,7 +110,7 @@ const createBookingCheckout = async (session) => {
         })
     ).id
     const price =
-        session.line_items[0].amount / 100
+        session.display_items[0].amount / 100
     await Booking.create({ tour, user, price })
 }
 
@@ -127,7 +133,8 @@ exports.webhookCheckout = (req, res, next) => {
     }
 
     if (
-        event.type === 'checkout.session.complete'
+        event.type ===
+        'checkout.session.completed'
     ) {
         createBookingCheckout(event.data.object)
     }
