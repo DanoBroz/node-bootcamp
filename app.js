@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const hpp = require('hpp')
 const cookieParser = require('cookie-parser')
 const compression = require('compression')
+const cors = require('cors')
 
 const mongoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
@@ -26,6 +27,11 @@ app.set('views', path.join(__dirname, 'views'))
 
 // global Middlewares
 // security http headers
+
+// implement cors
+app.use(cors())
+
+app.options('*', cors())
 
 // serving static files
 app.use(
