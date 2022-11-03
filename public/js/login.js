@@ -6,7 +6,7 @@ import { showAlert } from './alerts'
 export const login = async (email, password) => {
     try {
         const result = await axios.post(
-            'http://localhost:3000/api/v1/users/login',
+            '/api/v1/users/login',
             {
                 email,
                 password,
@@ -33,7 +33,7 @@ export const login = async (email, password) => {
 export const logout = async () => {
     try {
         const res = await axios.get(
-            'http://localhost:3000/api/v1/users/logout'
+            '/api/v1/users/logout'
         )
         if (res.data.status === 'success')
             location.reload(true)

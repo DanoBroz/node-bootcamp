@@ -14,7 +14,7 @@ export const updateSettings = async (
                 : 'updateMe'
 
         const res = await axios.patch(
-            `http://localhost:3000/api/v1/users/${url}`,
+            `/api/v1/users/${url}`,
             data
         )
         if (res.data.status === 'success') {
