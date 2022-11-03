@@ -5,6 +5,7 @@ const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
 const hpp = require('hpp')
 const cookieParser = require('cookie-parser')
+const compression = require('compression')
 
 const mongoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
@@ -140,6 +141,8 @@ app.use(
         ],
     })
 )
+
+app.use(compression())
 
 // test middleware
 app.use((req, res, next) => {
